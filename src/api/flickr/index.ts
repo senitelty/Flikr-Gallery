@@ -1,8 +1,9 @@
-import { useApi } from 'api';
+import { IOptions, useApi } from 'api';
 import { FLICKR_PHOTO_PARAMS } from 'api/flickr/constants';
 import { FLICKR_BASE_URL } from 'settings';
 
-interface IPhoto {
+export interface IPhoto {
+  id: string;
   title: string;
   url_c: string;
   url_l: string;
@@ -16,7 +17,7 @@ interface IPhoto {
   url_z: string;
 }
 
-interface IPhotos {
+export interface IPhotos {
   page: number;
   pages: number;
   perpage: number;
@@ -24,10 +25,10 @@ interface IPhotos {
   photo: (IPhoto & Record<string, unknown>)[];
 }
 
-interface IFlickerResponse {
+export interface IFlickerResponse {
   photos: IPhotos;
   stat: string;
 }
 
-export const useFlickrPhotos = (perPage = '100') =>
-  useApi<IFlickerResponse>(FLICKR_BASE_URL, { ...FLICKR_PHOTO_PARAMS, per_page: perPage });
+export const useFlickrPhotos = (page = '1', options?: IOptions<IFlickerResponse>) =>
+  useApi<IFlickerResponse>(FLICKR_BASE_URL, { ...FLICKR_PHOTO_PARAMS, page }, options);
