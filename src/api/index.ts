@@ -21,9 +21,11 @@ export const useApi = <T>(
   options?: IOptions<T>
 ): IApiResponse<T> => {
   const [state, setState] = useState<IApiResponse<T>>({ isFetching: false, isFetched: false, isError: false });
+
   useEffect(() => {
     if (!state.isFetching) {
-      setState({ ...state, isFetching: true });
+      setState(oldState => ({ ...oldState, isFetching: true }));
+
       fetch(getUrlWithSearchParams(path, queryParams ?? {}))
         .then(res => res.json())
         .then(

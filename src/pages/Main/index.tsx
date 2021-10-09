@@ -28,11 +28,13 @@ export const Main: FC = () => {
   const [likedPhotos, changeLikedPhotos] = useLocalStorage<any>('liked-photos', {});
   const [currentPage, setCurrentPage] = useState(1);
   const [photos, setPhotos] = useState<(IPhoto & Record<string, unknown>)[]>([]);
+
   const { isFetching, error, data } = useFlickrPhotos(currentPage.toString(), {
     onSuccess: successResponse => {
       setPhotos([...photos, ...successResponse.photos.photo]);
     },
   });
+
   const loadPhotos = debounce((prop: any) => {
     setCurrentPage(prop + 1);
   });
